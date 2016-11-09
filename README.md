@@ -1,16 +1,15 @@
-# PAGINATION
+# File Upload Class 
 
 usage
 ------- 
 
 ```php
 <?php
-	$pagination = new Pagination($limit, $num_rows, $current_page, $link, $len);
-	$pagination_html = $pagination->get_html();
+	$fileUpload = new FileUpload();
+
+	$fileUpload->setFile($_FILE['input_file']);
+	$fileUpload->upload();
 ?>
-<div class="pagination">
-	<?=$pagination_html?>
-</div>
 ```
 
 [블로그](http://blog.serpongs.net)
