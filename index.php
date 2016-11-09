@@ -11,6 +11,8 @@ include("./class/file_upload.class.php");
 	</style>
 </head>
 <body>
-
+	<?
+	$file = new FileUpload();
+	?>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-//todo: limit size, check type
+//todo: limit size, check type, multi file upload
 class FileUpload{
 	
 	/*private $is_multi = false;*/
@@ -11,29 +11,19 @@ class FileUpload{
 
 	private $allowed_type = array();
 
-
 	private $file_name = NULL;
 	private $ext;
 	private $md5;
 
 	function __construct()
 	{
+		$this->root = $_SERVER['DOCUMENT_ROOT'];
 	}
 
 	private function setup()
 	{
 		//setting md5
 		$this->md5 = md5(time() . rand());
-
-		//validate file 1
-		if($this->obj_file['error'] != 0){
-			return false;
-		}
-
-		//validate file 2
-		if(!is_uploaded_file($this->obj_file['tmp_name'])){
-			return false;
-		}
 
 		//setting file ext
 		$ext_tmp = '';
@@ -49,13 +39,37 @@ class FileUpload{
 		return true;
 	}
 
+
+
+	public function upload(){
+		return move_uploaded_file($this->obj_file['tmp_name'], $this->root . $this->dir .'/'. $this->md5);
+	}
+	public function checkFile(){
+		//validate file 1
+		if($this->obj_file['error'] != 0){
+			return false;
+		}
+
+		//validate file 2
+		if(!is_uploaded_file($this->obj_file['tmp_name'])){
+			return false;
+		}
+
+		if(!empty($allowed_type))
+		{
+			//todo
+		}
+	}
+
+
+
 	public function setFile($obj_file){
 		$this->obj_file = $obj_file;
-/*
+		/*
 		//set is_multi
 		if(is_array($this->obj_file['error']))
 			$this->is_multi = true;
-*/
+		*/
 		return $this->setup();
 	}
 	public function setRoot($root){
@@ -77,21 +91,28 @@ class FileUpload{
 	}
 
 
-	public function upload(){
-		return move_uploaded_file($this->obj_file['tmp_name'], $this->root . $this->dir .'/'. $this->md5);
-	}
-
-
 	public function getName(){
+		if(!$this->chkFileSet())
+			return false;
+
 		return $this->name;
 	}
 	public function getExt(){
+		if(!$this->chkFileSet())
+			return false;
+
 		return $this->ext;
 	}
 	public function getMd5(){
+		if(!$this->chkFileSet())
+			return false;
+
 		return $this->md5;
 	}
 	public function getInfo(){
+		if(!$this->chkFileSet())
+			return false;
+
 		return array(
 			"obj_file"		=> $this->obj_file,
 			"dir"			=> $this->dir,
@@ -103,7 +124,15 @@ class FileUpload{
 			"md5"			=> $this->md5,
 		);
 	}
-}
-	
 
+
+	private function chkFileSet(){
+		if($this->obj_file == NULL){
+			throw new Exception('setFile() first!');
+			return false;
+		}
+	}
+
+
+}
 ?>
