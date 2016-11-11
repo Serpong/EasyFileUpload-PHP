@@ -7,7 +7,7 @@ usage
 <?php
 	$fileUpload = new FileUpload();
 
-	$fileUpload->setFile($_FILE['input_file']);
+	$fileUpload->setFile($_FILES['input_file']);
 	if($fileUpload->checkFile())
 		echo "this file is ok";
 	else
