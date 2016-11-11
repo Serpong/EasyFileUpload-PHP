@@ -22,25 +22,25 @@ usage
 
 void setFile($obj_file)
 
-	setFile($obj_file)
+	setFile($_FILES['f'])
 void setRoot($root)
 
-	setRoot($root)
+	setRoot("/var/www/html")
 void setDir($dir)
 
 	checkFile()
 void setFileName($file_name)
 
-	setFileName($file_name)
+	setFileName("file_name")
 void setAllowedType($allowed_type)
 
-	setDir($dir)
+	setDir("/upload")
 array upload()
 
 	upload()
 array checkFile()
 
-	setAllowedType($allowed_type)
+	setAllowedType(array('jpg','gif'))
 string getName()	
 
 	getName()	
