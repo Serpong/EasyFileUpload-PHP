@@ -9,6 +9,8 @@ class FileUpload{
 	private $dir = '/upload';
 	private $root = NULL;
 
+	private $uploaded = false;
+
 	private $allowed_type = array();
 
 	private $file_name = NULL;
@@ -42,7 +44,9 @@ class FileUpload{
 
 
 	public function upload(){
-		return move_uploaded_file($this->obj_file['tmp_name'], $this->root . $this->dir .'/'. $this->md5);
+		$b_result = move_uploaded_file($this->obj_file['tmp_name'], $this->root . $this->dir .'/'. $this->md5);
+		$this->uploaded = true;
+		return $b_result;
 	}
 	public function checkFile(){
 		//validate file 1
@@ -70,6 +74,7 @@ class FileUpload{
 		if(is_array($this->obj_file['error']))
 			$this->is_multi = true;
 		*/
+		$this->uploaded = false;
 		return $this->setup();
 	}
 	public function setRoot($root){
@@ -109,6 +114,12 @@ class FileUpload{
 
 		return $this->md5;
 	}
+	public function getUploaded(){
+		if(!$this->chkFileSet())
+			return false;
+
+		return $this->uploaded;
+	}
 	public function getInfo(){
 		if(!$this->chkFileSet())
 			return false;
@@ -122,6 +133,7 @@ class FileUpload{
 			"name"			=> $this->name,
 			"ext"			=> $this->ext,
 			"md5"			=> $this->md5,
+			"uploaded"		=> $this->uploaded,
 		);
 	}
 
